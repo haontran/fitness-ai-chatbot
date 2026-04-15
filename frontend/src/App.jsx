@@ -3,24 +3,28 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import "./App.css";
 
-
 function App() {
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([
-    { role: "assistant", text: "Hey! Ask me a fitness question." },
+    { role: "assistant", text: "Hey — ask me anything about workouts, running, or nutrition." },
   ]);
   const [loading, setLoading] = useState(false);
 
-  const sendMessage = async () => {
-    if (!message.trim()) return;
+  const bottomRef = useRef(null);
 
-    const userMessage = { role: "user", text: message };
+  const sendMessage = async () => {
+    if (!message.trim() || loading) return;
+
+    const currentMessage = message;
+    const userMessage = { role: "user", text: currentMessage };
+
     setChatHistory((prev) => [...prev, userMessage]);
+    setMessage("");
     setLoading(true);
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/chat", {
-        message: message,
+        message: currentMessage,
       });
 
       const botMessage = {
@@ -32,13 +36,12 @@ function App() {
     } catch (error) {
       setChatHistory((prev) => [
         ...prev,
-        { role: "assistant", text: "Error talking to backend." },
+        { role: "assistant", text: "Sorry, something went wrong talking to the backend." },
       ]);
       console.error(error);
+    } finally {
+      setLoading(false);
     }
-
-    setMessage("");
-    setLoading(false);
   };
 
   const handleKeyDown = (e) => {
@@ -47,15 +50,16 @@ function App() {
     }
   };
 
-  const bottomRef = useRef(null);
-
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory]);
+  }, [chatHistory, loading]);
 
   return (
     <div className="app">
-      <h1>AI Fitness Chatbot</h1>
+      <div className="header">
+        <h1>AI Fitness Coach</h1>
+        <p>Personalized fitness guidance powered by Gemini</p>
+      </div>
 
       <div className="chat-box">
         {chatHistory.map((chat, index) => (
@@ -63,14 +67,14 @@ function App() {
             <ReactMarkdown>{chat.text}</ReactMarkdown>
           </div>
         ))}
-        {loading && <div className="message assistant">Bot: Thinking...</div>}
+        {loading && <div className="message assistant">Thinking...</div>}
         <div ref={bottomRef} />
       </div>
 
       <div className="input-area">
         <input
           type="text"
-          placeholder="Send a message..."
+          placeholder="Ask about workouts, running, nutrition..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}

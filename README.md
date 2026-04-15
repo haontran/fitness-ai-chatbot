@@ -18,6 +18,3 @@ Full-stack AI chatbot that gives fitness advice to user using Google Gemini.
 - Python
 - FastAPI
 - Google Gemini API
-
-## Demo
-<img src="./demo.png" width="800"/>
