@@ -1,14 +1,23 @@
 # AI Fitness Chatbot
 
-FOR NOW...
-FastAPI backend that uses Google Gemini API to generate fitness advice using a chat.
-
-## Tech Stack
-- Python
-- FastAPI
-- Gemini API
-- WSL
+Full-stack AI chatbot that gives fitness advice to user using Google Gemini.
 
 ## Features
-- Chat endpoint for fitness advice
-- LLM integration
+
+- Real-time chat interface
+- AI fitness guidance
+
+## Tech Stack
+
+**Frontend**
+- React
+- Axios
+- CSS
+
+**Backend**
+- Python
+- FastAPI
+- Google Gemini API
+
+## Demo
+<img src="./demo.png" width="800"/>
