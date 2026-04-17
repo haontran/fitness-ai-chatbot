@@ -6,7 +6,10 @@ import "./App.css";
 function App() {
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([
-    { role: "assistant", text: "Hey — ask me anything about workouts, running, or nutrition." },
+    {
+      role: "assistant",
+      text: "Hey — ask me anything about workouts, running, or nutrition.",
+    },
   ]);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +39,10 @@ function App() {
     } catch (error) {
       setChatHistory((prev) => [
         ...prev,
-        { role: "assistant", text: "Sorry, something went wrong talking to the backend." },
+        {
+          role: "assistant",
+          text: "Sorry, something went wrong talking to the backend.",
+        },
       ]);
       console.error(error);
     } finally {
@@ -55,10 +61,11 @@ function App() {
   }, [chatHistory, loading]);
 
   return (
-    <div className="app">
+  <div className="app">
+    <div className="shell">
       <div className="header">
         <h1>AI Fitness Coach</h1>
-        <p>Personalized fitness guidance powered by Gemini</p>
+        <p>Ask about workouts, running, recovery, or nutrition.</p>
       </div>
 
       <div className="chat-box">
@@ -71,20 +78,22 @@ function App() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="input-area">
-        <input
-          type="text"
-          placeholder="Ask about workouts, running, nutrition..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button onClick={sendMessage} disabled={loading}>
-          Send
-        </button>
+      <div className="composer">
+        <div className="input-area">
+          <input
+            type="text"
+            placeholder="Message AI Fitness Coach"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <button onClick={sendMessage} disabled={loading}>
+            Send
+          </button>
+        </div>
       </div>
     </div>
-  );
-}
+  </div>
+);
 
 export default App;
